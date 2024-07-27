@@ -5,11 +5,14 @@ django.setup()
 from django.core.mail import send_mail
 from apscheduler.schedulers.blocking import BlockingScheduler
 import requests
+from Alert.models import Alert
+from datetime import datetime 
 import json
 
 #sched = BlockingScheduler()
 
 #@sched.scheduled_job('interval', minutes = 1)
+
 coingeko_api = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
 coindesk_api = "https://api.coindesk.com/v1/bpi/currentprice.json"
 
@@ -18,6 +21,8 @@ def bitcoin_price_alert():
     get_bitcoin_price = requests.get(coindesk_api)
     result = json.loads(get_bitcoin_price.text)
     current_price = result['bpi']['USD']['rate_float']
+    current_date =  datetime.now("%Y-%m-%d")
+
     #print(current_price)
 
     #Check if the price is beneth User price
